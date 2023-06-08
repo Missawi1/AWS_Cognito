@@ -1,7 +1,3 @@
-output "my-identity-pool_id" {
-  value = aws_cognito_identity_pool.my-identity-pool.id
-}
-
 output "user_pool_id" {
   value = aws_cognito_user_pool.my-user-pool.id
 }
@@ -20,12 +16,4 @@ output "certificate_arn" {
 
 output "cognito_signing_certificate" {
   value = data.external.cognito_signing_certificate.result.certificate
-}
-
-output "identity_provider_id" {
-  value = aws_cognito_identity_provider.Google.id
-}
-
-output "identity_provider_id" {
-  value = aws_cognito_identity_provider.Facebook.id
 }
