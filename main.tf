@@ -219,7 +219,6 @@ resource "aws_cognito_identity_pool_roles_attachment" "main" {
     ambiguous_role_resolution = "AuthenticatedRole"
     type                      = "Rules"
 
-
     mapping_rule {
       claim      = "isAdmin"
       match_type = "Equals"
