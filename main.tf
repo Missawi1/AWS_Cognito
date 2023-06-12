@@ -16,7 +16,7 @@ resource "aws_cognito_identity_pool" "my-identity-pool" {
   }
 
   cognito_identity_providers {
-    client_id               = "facebook-client-id"
+    client_id = "facebook-client-id"
     provider_name           = "graph.facebook.com"
     server_side_token_check = true
   }
@@ -230,6 +230,4 @@ resource "aws_cognito_identity_pool_roles_attachment" "main" {
   roles = {
     "authenticated" = aws_iam_role.authenticated.arn
   }
-}{
-
 }
