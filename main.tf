@@ -1,17 +1,17 @@
 resource "aws_cognito_identity_pool" "my-identity-pool" {
-  identity_pool_name               = "my-identity-pool"
+  identity_pool_name = "my-identity-pool"
   allow_unauthenticated_identities = false
   allow_classic_flow               = false
 
   cognito_identity_providers {
     client_id               = "6lhlkkfbfb4q5kpp90urffae"
-    provider_name           = "cognito-idp.us-east-1.amazonaws.com/us-east-1_Tv0493apJ"
+    provider_name  = "cognito-idp.us-east-1.amazonaws.com/us-east-1_Tv0493apJ"
     server_side_token_check = false
   }
 
   cognito_identity_providers {
-    client_id               = "google-client-id"
-    provider_name           = "accounts.google.com"
+    client_id = "google-client-id"
+    provider_name = "accounts.google.com"
     server_side_token_check = true
   }
 
@@ -230,4 +230,6 @@ resource "aws_cognito_identity_pool_roles_attachment" "main" {
   roles = {
     "authenticated" = aws_iam_role.authenticated.arn
   }
+}{
+
 }
