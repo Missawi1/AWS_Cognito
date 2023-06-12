@@ -1,22 +1,22 @@
 resource "aws_cognito_identity_pool" "my-identity-pool" {
-  identity_pool_name = "my-identity-pool"
+  identity_pool_name               = "my-identity-pool"
   allow_unauthenticated_identities = false
   allow_classic_flow               = false
 
   cognito_identity_providers {
     client_id               = "6lhlkkfbfb4q5kpp90urffae"
-    provider_name  = "cognito-idp.us-east-1.amazonaws.com/us-east-1_Tv0493apJ"
+    provider_name           = "cognito-idp.us-east-1.amazonaws.com/us-east-1_Tv0493apJ"
     server_side_token_check = false
   }
 
   cognito_identity_providers {
-    client_id = "google-client-id"
-    provider_name = "accounts.google.com"
+    client_id               = "google-client-id"
+    provider_name           = "accounts.google.com"
     server_side_token_check = true
   }
 
   cognito_identity_providers {
-    client_id = "facebook-client-id"
+    client_id               = "facebook-client-id"
     provider_name           = "graph.facebook.com"
     server_side_token_check = true
   }
@@ -28,13 +28,13 @@ resource "aws_cognito_identity_pool" "my-identity-pool" {
 }
 
 resource "aws_cognito_user_pool" "my-user-pool" {
-  name = "my-user-pool"
+  name                     = "my-user-pool"
   auto_verified_attributes = ["Email"]
-  
+
   #Enabling SMS and Software Token Multi-Factor Authentication
-  mfa_configuration = "ON"
+  mfa_configuration          = "ON"
   sms_authentication_message = "Your verification code is {####}"
-  
+
   software_token_mfa_configuration {
     enabled = true
   }
@@ -42,7 +42,7 @@ resource "aws_cognito_user_pool" "my-user-pool" {
   #Account recovery setting
   account_recovery_setting {
     recovery_mechanism {
-      name = "verified_email"
+      name     = "verified_email"
       priority = 1
     }
   }
@@ -54,12 +54,12 @@ resource "aws_cognito_user_pool" "my-user-pool" {
 
   email_configuration {
     email_sending_account = "COGNITO_DEFAULT"
-    from_email_address = "ajiduahawele3@gmail.com"
-    
+    from_email_address    = "ajiduahawele3@gmail.com"
+
   }
 
   verification_message_template {
-    default_email_option = "CONFIRM_WITH_LINK"
+    default_email_option  = "CONFIRM_WITH_LINK"
     email_subject_by_link = "Verify your email"
     email_message_by_link = "Hello {username},\n\nPlease click the following link to verify your email address: {##Click Here##} \n\nThank you,\nOur App Team"
     sms_message {
@@ -81,48 +81,48 @@ resource "aws_cognito_user_pool" "my-user-pool" {
 
   schema = [
     {
-      name = "username"
+      name                = "username"
       attribute_data_type = "String"
-      mutable = false
-      required = true
+      mutable             = false
+      required            = true
     },
     {
-      name = "email"
+      name                = "email"
       attribute_data_type = "String"
-      mutable = true
-      required = true
+      mutable             = true
+      required            = true
     },
     {
-      name = "phone_number"
+      name                = "phone_number"
       attribute_data_type = "String"
-      mutable = true
-      required = true
+      mutable             = true
+      required            = true
     }
   ]
 }
 
 #Creating a user pool client with Cognito as the identity provider
 resource "aws_cognito_user_pool_client" "my-user-pool-client" {
-  name = "my-user-pool-client"
+  name         = "my-user-pool-client"
   user_pool_id = aws_cognito_user_pool.my-user-pool.id
 
-  allowed_oauth_flows_user_pool_client        = true
-  allowed_oauth_flows                         = ["code"]
-  allowed_oauth_scopes                        = ["openid"]
-  callback_urls                               = ["https://example.com/callback"]
-  default_redirect_uri                        = "https://example.com/callback"
-  generate_secret                             = false
-  logout_urls                                 = ["https://example.com/logout"]
-  prevent_user_existence_errors               = false
-  read_attributes                             = ["email", "phone_number"]
-  refresh_token_validity                      = 30
-  supported_identity_providers                = ["COGNITO"]
+  allowed_oauth_flows_user_pool_client = true
+  allowed_oauth_flows                  = ["code"]
+  allowed_oauth_scopes                 = ["openid"]
+  callback_urls                        = ["https://example.com/callback"]
+  default_redirect_uri                 = "https://example.com/callback"
+  generate_secret                      = false
+  logout_urls                          = ["https://example.com/logout"]
+  prevent_user_existence_errors        = false
+  read_attributes                      = ["email", "phone_number"]
+  refresh_token_validity               = 30
+  supported_identity_providers         = ["COGNITO"]
 }
 
 #Creating user pool domain
 resource "aws_cognito_user_pool_domain" "my-user-pool-domain" {
-  domain        = "www.abc321.com/landing-page"
-  user_pool_id  = aws_cognito_user_pool.my-user-pool.id
+  domain          = "www.abc321.com/landing-page"
+  user_pool_id    = aws_cognito_user_pool.my-user-pool.id
   certificate_arn = aws_acm_certificate.my-app-cert.arn
 }
 
@@ -138,7 +138,7 @@ resource "aws_cognito_identity_provider" "Google" {
   }
 
   attribute_mapping = {
-    email    = "email"
+    email = "email"
   }
 }
 
@@ -151,20 +151,20 @@ resource "aws_cognito_identity_provider" "Facebook" {
     authorize_scopes = "email"
     client_id        = "your client_id"
     client_secret    = "your client_secret"
-    api_version = "your api_version"
+    api_version      = "your api_version"
   }
 
   attribute_mapping = {
-    email    = "email"
+    email = "email"
   }
 }
 
 resource "aws_acm_certificate" "my-app-cert" {
   domain_name       = aws_route53_record.my-app-domain.name
-  validation_method   = "DNS"
+  validation_method = "DNS"
 
   lifecycle {
-    create_before_destroy   = true
+    create_before_destroy = true
   }
 }
 
